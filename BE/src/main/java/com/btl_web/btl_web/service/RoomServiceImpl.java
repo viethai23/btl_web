@@ -3,14 +3,14 @@ package com.btl_web.btl_web.service;
 import com.btl_web.btl_web.mapper.RoomMapper;
 import com.btl_web.btl_web.model.Entity.Hotel;
 import com.btl_web.btl_web.model.Entity.Room;
-import com.btl_web.btl_web.repository.HotelRepository;
+import com.btl_web.btl_web.model.dto.RoomRequestDto;
+import com.btl_web.btl_web.model.dto.RoomResponseDto;
 import com.btl_web.btl_web.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -19,58 +19,71 @@ public class RoomServiceImpl implements RoomService {
     private RoomRepository roomRepository;
 
     @Autowired
-    private HotelRepository hotelRepository;
-
-    @Autowired
     private RoomMapper roomMapper;
 
-
-    public List<Room> getAllRooms() {
-        return roomRepository.findAll();
-    }
-
-    public List<Room> getRoomsByType(String type) {
-        return roomRepository.findAllByType(type);
-    }
-
-    public List<Room> getRoomsByPriceLessThanEqual(Float maxPrice) {
-        return roomRepository.findByPriceLessThanEqual(maxPrice);
-    }
-
-    public Room getRoomById(Long id) {
-        return roomRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Room not found with id " + id));
-    }
-
-    public Room createRoom(Room room) {
-        return roomRepository.save(room);
+    @Override
+    public List<RoomResponseDto> getAllRooms() {
+        List<Room> rooms = roomRepository.findAll();
+        return rooms.stream().map(room -> roomMapper.toDto(room)).collect(Collectors.toList());
     }
 
     @Override
-    public Room updateRoom(Long id, Room roomDetails) {
-        Optional<Room> optionalRoom = roomRepository.findById(id);
-        if (!optionalRoom.isPresent()) {
-            return null;
-        }
-        Room room = optionalRoom.get();
-        room.setName(roomDetails.getName());
-        room.setType(roomDetails.getType());
-        room.setPrice(roomDetails.getPrice());
-        room.setDescription(roomDetails.getDescription());
-        if (roomDetails.getHotel() != null && roomDetails.getHotel().getId() != null) {
-            Optional<Hotel> optionalHotel = hotelRepository.findById(roomDetails.getHotel().getId());
-            if (optionalHotel.isPresent()) {
-                room.setHotel(optionalHotel.get());
-            }
+    public List<RoomResponseDto> getRoomsByHotelId(Long hotelId) {
+        List<Room> rooms = roomRepository.findByHotel_Id(hotelId);
+        return rooms.stream().map(room -> roomMapper.toDto(room)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RoomResponseDto> searchRoomsByName(String name) {
+        List<Room> rooms = roomRepository.findByRoomNameContainingIgnoreCase(name);
+        return rooms.stream().map(room -> roomMapper.toDto(room)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RoomResponseDto> getRoomsSortedByPrice(boolean ascending) {
+        List<Room> rooms;
+        if (ascending) {
+            rooms = roomRepository.findAllByOrderByPriceAsc();
         } else {
-            room.setHotel(null);
+            rooms = roomRepository.findAllByOrderByPriceDesc();
         }
-        return roomRepository.save(room);
+        return rooms.stream().map(room -> roomMapper.toDto(room)).collect(Collectors.toList());
     }
 
+    @Override
+    public RoomResponseDto getRoomById(Long id) {
+        Room room = roomRepository.findById(id).orElseThrow(() -> new RuntimeException("Room not found"));
+        return roomMapper.toDto(room);
+    }
+
+    @Override
+    public RoomResponseDto createRoom(RoomRequestDto roomRequestDto) {
+        Room room = roomMapper.toEntity(roomRequestDto);
+        room = roomRepository.save(room);
+        return roomMapper.toDto(room);
+    }
+
+    @Override
+    public RoomResponseDto updateRoom(Long id, RoomRequestDto roomRequestDto) {
+        Room room = roomRepository.findById(id).orElseThrow(() -> new RuntimeException("Room not found"));
+        room.setRoomName(roomRequestDto.getRoomName());
+        room.setRoomType(roomRequestDto.getRoomType());
+        room.setRoomSize(roomRequestDto.getRoomSize());
+        room.setMaxOccupancy(roomRequestDto.getMaxOccupancy());
+        room.setPrice(roomRequestDto.getPrice());
+        if (roomRequestDto.getHotelId() != null) {
+            Hotel hotel = new Hotel();
+            hotel.setId(roomRequestDto.getHotelId());
+            room.setHotel(hotel);
+        }
+        room = roomRepository.save(room);
+        return roomMapper.toDto(room);
+    }
+
+    @Override
     public void deleteRoom(Long id) {
-        Room room = getRoomById(id);
-
-        roomRepository.delete(room);
+        roomRepository.deleteById(id);
     }
-
 }
+
+

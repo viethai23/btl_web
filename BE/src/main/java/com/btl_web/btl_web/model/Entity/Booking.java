@@ -1,82 +1,46 @@
 package com.btl_web.btl_web.model.Entity;
-
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDate;
-
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 @Entity
-@Table(name = "booking")
-public class Booking implements Serializable {
-
+@Table(name = "Booking")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "check_in")
-    private LocalDate checkIn;
+    @Column(name = "booking_date", nullable = false)
+    private LocalDate bookingDate;
 
-    @Column(name = "check_out")
-    private LocalDate checkOut;
+    @Column(name = "checkin_date", nullable = false)
+    private LocalDate checkinDate;
+
+    @Column(name = "checkout_date", nullable = false)
+    private LocalDate checkoutDate;
+
+    @Column(name = "num_of_guests", nullable = false)
+    private Integer numOfGuests;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id", nullable = false)
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
+
+    @ManyToOne(fetch = FetchType.LAZY)@JoinColumn(name = "room_id", nullable = false)
     private Room room;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false, nullable = false)
+    private LocalDateTime createdAt;
 
-    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Payment payment;
-
-    public Booking() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDate getCheckIn() {
-        return checkIn;
-    }
-
-    public void setCheckIn(LocalDate checkIn) {
-        this.checkIn = checkIn;
-    }
-
-    public LocalDate getCheckOut() {
-        return checkOut;
-    }
-
-    public void setCheckOut(LocalDate checkOut) {
-        this.checkOut = checkOut;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Payment getPayment() {
-        return payment;
-    }
-
-    public void setPayment(Payment payment) {
-        this.payment = payment;
-    }
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }

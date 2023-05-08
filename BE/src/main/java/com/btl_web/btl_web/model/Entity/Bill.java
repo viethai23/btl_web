@@ -3,38 +3,33 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 @Entity
-@Table(name = "room")
+@Table(name = "bill")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Room {
+public class Bill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "room_name", nullable = false)
-    private String roomName;
+    @Column(name = "payment_date", nullable = false)
+    private LocalDate paymentDate;
 
-    @Column(name = "room_type", nullable = false)
-    private String roomType;
-
-    @Column(name = "room_size", nullable = false)
-    private Integer roomSize;
-
-    @Column(name = "max_occupancy", nullable = false)
-    private Integer maxOccupancy;
-
-    @Column(name = "price", nullable = false)
-    private BigDecimal price;
+    @Column(name = "payment_method", nullable = false)
+    private String paymentMethod;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hotel_id", nullable = false)
-    private Hotel hotel;
+    @JoinColumn(name = "booking_id", nullable = false)
+    private Booking booking;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false, nullable = false)
