@@ -3,6 +3,8 @@ package com.btl_web.btl_web.service;
 import com.btl_web.btl_web.model.dto.RoomRequestDto;
 import com.btl_web.btl_web.model.dto.RoomResponseDto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface RoomService {
@@ -20,6 +22,7 @@ public interface RoomService {
     RoomResponseDto createRoom(RoomRequestDto roomRequestDto);
 
     RoomResponseDto updateRoom(Long id, RoomRequestDto roomRequestDto);
+    public boolean isRoomAvailable(Long roomId, LocalDate checkin, LocalDate checkout);
 
     void deleteRoom(Long id);
 }

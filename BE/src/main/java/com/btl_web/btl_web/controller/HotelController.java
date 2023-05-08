@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/hotels")
+@CrossOrigin
 public class HotelController {
 
     private final HotelService hotelService;

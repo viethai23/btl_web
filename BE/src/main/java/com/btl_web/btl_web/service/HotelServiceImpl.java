@@ -1,6 +1,7 @@
 package com.btl_web.btl_web.service;
 
 import com.btl_web.btl_web.mapper.HotelMapper;
+import com.btl_web.btl_web.model.Entity.Client;
 import com.btl_web.btl_web.model.Entity.Hotel;
 import com.btl_web.btl_web.model.dto.HotelRequestDto;
 import com.btl_web.btl_web.model.dto.HotelResponseDto;
@@ -41,6 +42,7 @@ public class HotelServiceImpl implements HotelService {
         hotel = hotelRepository.save(hotel);
         return hotelMapper.toDto(hotel);
     }
+
 
     @Override
     public void delete(Long id) {

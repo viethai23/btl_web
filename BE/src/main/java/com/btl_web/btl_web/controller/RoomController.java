@@ -4,15 +4,18 @@ import com.btl_web.btl_web.model.dto.RoomRequestDto;
 import com.btl_web.btl_web.model.dto.RoomResponseDto;
 import com.btl_web.btl_web.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/rooms")
+@CrossOrigin
 public class RoomController {
 
     @Autowired
@@ -59,5 +62,11 @@ public class RoomController {
     public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
         roomService.deleteRoom(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<Boolean> checkRoomAvailability(@RequestParam Long roomId, @RequestParam LocalDate checkinDate, @RequestParam LocalDate checkoutDate) {
+        Boolean isAvailable = roomService.isRoomAvailable(roomId, checkinDate, checkoutDate);
+        return new ResponseEntity<>(isAvailable, HttpStatus.OK);
     }
 }

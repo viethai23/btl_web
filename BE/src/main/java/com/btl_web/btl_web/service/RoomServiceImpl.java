@@ -1,14 +1,19 @@
 package com.btl_web.btl_web.service;
 
 import com.btl_web.btl_web.mapper.RoomMapper;
+import com.btl_web.btl_web.model.Entity.Booking;
 import com.btl_web.btl_web.model.Entity.Hotel;
 import com.btl_web.btl_web.model.Entity.Room;
 import com.btl_web.btl_web.model.dto.RoomRequestDto;
 import com.btl_web.btl_web.model.dto.RoomResponseDto;
+import com.btl_web.btl_web.repository.BookingRepository;
 import com.btl_web.btl_web.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +25,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Autowired
     private RoomMapper roomMapper;
+
+    private BookingRepository bookingRepository;
 
     @Override
     public List<RoomResponseDto> getAllRooms() {
@@ -78,6 +85,20 @@ public class RoomServiceImpl implements RoomService {
         }
         room = roomRepository.save(room);
         return roomMapper.toDto(room);
+    }
+
+    @Override
+    public boolean isRoomAvailable(Long roomId, LocalDate checkin, LocalDate checkout) {
+        List<Booking> bookings = bookingRepository.findByRoomId(roomId);
+        for (Booking booking : bookings) {
+            if ((checkin.isBefore(booking.getCheckinDate()) && checkout.isAfter(booking.getCheckinDate()) && checkout.isBefore(booking.getCheckoutDate())) ||
+                    (checkin.isAfter(booking.getCheckinDate()) && checkin.isBefore(booking.getCheckoutDate()) && checkout.isAfter(booking.getCheckoutDate())) ||
+                    (booking.getCheckinDate().isBefore(checkin) && booking.getCheckoutDate().isAfter(checkout)) ||
+                    (booking.getCheckinDate().isBefore(checkin) && booking.getCheckoutDate().isAfter(checkin) && booking.getCheckoutDate().isBefore(checkout))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
