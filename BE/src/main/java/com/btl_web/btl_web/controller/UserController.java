@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin
@@ -31,10 +34,34 @@ public class UserController {
         UserResponseDto userResponseDto = userService.updateUserPassword(id, newPassword);
         return ResponseEntity.ok(userResponseDto);
     }
-    //Dùng cho chức năng đăng nhâp và kiểm tra tài khoản là Admin (identifier = '666') hay Client
+    //Dùng cho chức năng đăng nhâp và kiểm tra tài khoản là Admin (identifier = '666') hay User
     @GetMapping("/login")
     public ResponseEntity<UserResponseDto> getUserByUsernameAndPassword(@RequestParam String username, @RequestParam String password) {
         UserResponseDto userResponseDto = userService.getUserByUsernameAndPassword(username, password);
         return ResponseEntity.ok(userResponseDto);
+    }
+    // Lấy tất cả User
+    @GetMapping
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
+        List<UserResponseDto> Users = userService.getAllUsers();
+        return ResponseEntity.ok(Users);
+    }
+    // Lấy User theo id
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
+        UserResponseDto User = userService.getUserById(id);
+        return ResponseEntity.ok(User);
+    }
+    // Sửa User
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long id, @RequestBody UserRequestDto requestDto) {
+        UserResponseDto User = userService.updateUser(id, requestDto);
+        return ResponseEntity.ok(User);
+    }
+    // Xóa User
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 }

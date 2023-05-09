@@ -11,9 +11,9 @@ public interface BookingService {
     void deleteBooking(Long id);
     BookingResponseDto getBookingById(Long id);
     List<BookingResponseDto> getAllBookings();
-    List<BookingResponseDto> getAllBookingsByClientId(Long clientId);
+    List<BookingResponseDto> getAllBookingsByUserId(Long UserId);
     List<BookingResponseDto> getAllBookingsByRoomId(Long roomId);
-    List<String> getRoomsBookedByClient(Long clientId);
-    double getTotalPaymentByClient(Long clientId);
+    List<String> getRoomsBookedByUser(Long UserId);
+    double getTotalPaymentByUser(Long UserId);
 }
 

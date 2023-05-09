@@ -26,8 +26,17 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "role", nullable = false)
-    private String role;
+    @Column(name = "full_name", nullable = false)
+    private String fullName;
+
+    @Column(name = "address", nullable = false)
+    private String address;
+
+    @Column(name = "phone_number", nullable = false)
+    private String phoneNumber;
+
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false, nullable = false)

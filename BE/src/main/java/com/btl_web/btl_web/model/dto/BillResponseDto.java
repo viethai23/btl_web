@@ -1,7 +1,5 @@
 package com.btl_web.btl_web.model.dto;
 
-import com.btl_web.btl_web.model.Entity.Booking;
-import com.btl_web.btl_web.model.Entity.Client;
 import lombok.*;
 
 @Data
@@ -12,5 +10,5 @@ public class BillResponseDto {
     private String paymentDate;
     private String paymentMethod;
     private BookingResponseDto booking;
-    private ClientResponseDto client;
+    private UserResponseDto User;
 }

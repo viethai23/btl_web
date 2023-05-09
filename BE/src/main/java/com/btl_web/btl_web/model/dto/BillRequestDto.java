@@ -9,5 +9,5 @@ public class BillRequestDto {
     private String paymentDate;
     private String paymentMethod;
     private Long bookingId;
-    private Long clientId;
+    private Long UserId;
 }

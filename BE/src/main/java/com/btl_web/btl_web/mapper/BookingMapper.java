@@ -1,15 +1,10 @@
 package com.btl_web.btl_web.mapper;
 
 import com.btl_web.btl_web.model.Entity.Booking;
-import com.btl_web.btl_web.model.Entity.Client;
 import com.btl_web.btl_web.model.Entity.Room;
+import com.btl_web.btl_web.model.Entity.User;
 import com.btl_web.btl_web.model.dto.*;
-import org.modelmapper.Conditions;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
-import org.modelmapper.convention.NamingConventions;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.Mapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,9 +23,9 @@ public class BookingMapper {
         booking.setCheckoutDate(dto.getCheckoutDate());
         booking.setNumOfGuests(dto.getNumOfGuests());
 
-        Client client = new Client();
-        client.setId(dto.getClientId());
-        booking.setClient(client);
+        User user = new User();
+        user.setId(dto.getUserId());
+        booking.setUser(user);
 
         Room room = new Room();
         room.setId(dto.getRoomId());
@@ -48,13 +43,13 @@ public class BookingMapper {
         dto.setCheckoutDate(entity.getCheckoutDate());
         dto.setNumOfGuests(entity.getNumOfGuests());
 
-        ClientResponseDto clientDto = new ClientResponseDto();
-        clientDto.setId(entity.getClient().getId());
-        clientDto.setAddress(entity.getClient().getAddress());
-        clientDto.setEmail(entity.getClient().getEmail());
-        clientDto.setFullName(entity.getClient().getFullName());
-        clientDto.setPhoneNumber(entity.getClient().getPhoneNumber());
-        dto.setClient(clientDto);
+        UserResponseDto UserDto = new UserResponseDto();
+        UserDto.setId(entity.getUser().getId());
+        UserDto.setAddress(entity.getUser().getAddress());
+        UserDto.setEmail(entity.getUser().getEmail());
+        UserDto.setFullName(entity.getUser().getFullName());
+        UserDto.setPhoneNumber(entity.getUser().getPhoneNumber());
+        dto.setUser(UserDto);
 
         RoomResponseDto roomDto = new RoomResponseDto();
         roomDto.setId(entity.getRoom().getId());

@@ -2,8 +2,7 @@ package com.btl_web.btl_web.mapper;
 
 import com.btl_web.btl_web.model.Entity.Bill;
 import com.btl_web.btl_web.model.Entity.Booking;
-import com.btl_web.btl_web.model.Entity.Client;
-import com.btl_web.btl_web.model.Entity.Room;
+import com.btl_web.btl_web.model.Entity.User;
 import com.btl_web.btl_web.model.dto.*;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +15,6 @@ public class BillMapper {
         Bill bill = new Bill();
         bill.setPaymentDate(requestDto.getPaymentDate());
         bill.setPaymentMethod(requestDto.getPaymentMethod());
-        Client client = new Client();
-        client.setId(requestDto.getClientId());
-        bill.setClient(client);
         Booking booking = new Booking();
         booking.setId(requestDto.getBookingId());
         bill.setBooking(booking);
@@ -31,21 +27,20 @@ public class BillMapper {
         dto.setPaymentDate(bill.getPaymentDate());
         dto.setPaymentMethod(bill.getPaymentMethod());
 
-        ClientResponseDto clientDto = new ClientResponseDto();
-        clientDto.setId(bill.getClient().getId());
-        clientDto.setAddress(bill.getClient().getAddress());
-        clientDto.setEmail(bill.getClient().getEmail());
-        clientDto.setFullName(bill.getClient().getFullName());
-        clientDto.setPhoneNumber(bill.getClient().getPhoneNumber());
-        dto.setClient(clientDto);
-
         BookingResponseDto bookingDto = new BookingResponseDto();
         bookingDto.setId(bill.getBooking().getId());
         bookingDto.setBookingDate(bill.getBooking().getBookingDate());
         bookingDto.setCheckinDate(bill.getBooking().getCheckinDate());
         bookingDto.setCheckoutDate(bill.getBooking().getCheckoutDate());
         bookingDto.setNumOfGuests(bill.getBooking().getNumOfGuests());
-        bookingDto.setClient(clientDto);
+
+        UserResponseDto userDto = new UserResponseDto();
+        userDto.setId(bill.getBooking().getUser().getId());
+        userDto.setAddress(bill.getBooking().getUser().getAddress());
+        userDto.setEmail(bill.getBooking().getUser().getEmail());
+        userDto.setFullName(bill.getBooking().getUser().getFullName());
+        userDto.setPhoneNumber(bill.getBooking().getUser().getPhoneNumber());
+        bookingDto.setUser(userDto);
 
         RoomResponseDto roomDto = new RoomResponseDto();
         roomDto.setId(bill.getBooking().getRoom().getId());

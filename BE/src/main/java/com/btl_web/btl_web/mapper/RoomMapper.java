@@ -1,16 +1,9 @@
 package com.btl_web.btl_web.mapper;
 
-import com.btl_web.btl_web.model.Entity.Booking;
-import com.btl_web.btl_web.model.Entity.Client;
 import com.btl_web.btl_web.model.Entity.Hotel;
 import com.btl_web.btl_web.model.Entity.Room;
 import com.btl_web.btl_web.model.dto.*;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class RoomMapper {

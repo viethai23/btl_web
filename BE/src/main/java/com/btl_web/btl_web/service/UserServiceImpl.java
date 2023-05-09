@@ -8,7 +8,9 @@ import com.btl_web.btl_web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,11 +27,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto addUser(UserRequestDto userRequestDto) {
         User user = userMapper.toEntity(userRequestDto);
-        if (user.getIdentifier().equals("666")) {
-            user.setRole("Admin");
-        } else {
-            user.setRole("Client");
-        }
         User savedUser = userRepository.save(user);
         return userMapper.toDto(savedUser);
     }
@@ -56,5 +53,39 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new RuntimeException("User not found with username and password");
         }
+    }
+
+    @Override
+    public List<UserResponseDto> getAllUsers() {
+        List<User> users = userRepository.findByIdentifier("Client");
+        return users.stream().map(userMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserResponseDto getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        return userMapper.toDto(user);
+    }
+
+
+    @Override
+    public UserResponseDto updateUser(Long id, UserRequestDto requestDto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        user.setFullName(requestDto.getFullName());
+        user.setAddress(requestDto.getAddress());
+        user.setPhoneNumber(requestDto.getPhoneNumber());
+        user.setEmail(requestDto.getEmail());
+        user = userRepository.save(user);
+        return userMapper.toDto(user);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("User not found with id: " + id);
+        }
+        userRepository.deleteById(id);
     }
 }

@@ -1,5 +1,6 @@
 package com.btl_web.btl_web.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,7 +13,10 @@ public class UserResponseDto {
     private String identifier;
     private String username;
     private String password;
-    private String role;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    @JsonProperty("full_name")
+    private String fullName;
+    private String address;
+    @JsonProperty("phone_number")
+    private String phoneNumber;
+    private String email;
 }

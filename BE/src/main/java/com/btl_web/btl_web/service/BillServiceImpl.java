@@ -3,13 +3,12 @@ package com.btl_web.btl_web.service;
 import com.btl_web.btl_web.mapper.BillMapper;
 import com.btl_web.btl_web.model.Entity.Bill;
 import com.btl_web.btl_web.model.Entity.Booking;
-import com.btl_web.btl_web.model.Entity.Client;
-import com.btl_web.btl_web.model.Entity.Room;
+import com.btl_web.btl_web.model.Entity.User;
 import com.btl_web.btl_web.model.dto.BillRequestDto;
 import com.btl_web.btl_web.model.dto.BillResponseDto;
 import com.btl_web.btl_web.repository.BillRepository;
 import com.btl_web.btl_web.repository.BookingRepository;
-import com.btl_web.btl_web.repository.ClientRepository;
+import com.btl_web.btl_web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +22,6 @@ public class BillServiceImpl implements BillService {
     private BillRepository billRepository;
     @Autowired
     private BillMapper billMapper;
-    @Autowired
-    private ClientRepository clientRepository;
     @Autowired
     private BookingRepository bookingRepository;
 
@@ -48,11 +45,6 @@ public class BillServiceImpl implements BillService {
     @Override
     public BillResponseDto createBill(BillRequestDto dto) {
         Bill bill = billMapper.toEntity(dto);
-        if (dto.getClientId() != null) {
-            Client client = clientRepository.findById(dto.getClientId())
-                    .orElseThrow(() -> new RuntimeException("Client not found with id: " + dto.getClientId()));;
-            bill.setClient(client);
-        }
         if (dto.getBookingId() != null) {
             Booking booking = bookingRepository.findById(dto.getBookingId())
                     .orElseThrow(() -> new RuntimeException("Booking not found with id: " + dto.getBookingId()));;
@@ -68,11 +60,6 @@ public class BillServiceImpl implements BillService {
             Bill bill = optionalBill.get();
             bill.setPaymentDate(dto.getPaymentDate());
             bill.setPaymentMethod(dto.getPaymentMethod());
-            if (dto.getClientId() != null) {
-                Client client = clientRepository.findById(dto.getClientId())
-                        .orElseThrow(() -> new RuntimeException("Client not found with id: " + dto.getClientId()));;
-                bill.setClient(client);
-            }
             if (dto.getBookingId() != null) {
                 Booking booking = bookingRepository.findById(dto.getBookingId())
                         .orElseThrow(() -> new RuntimeException("Booking not found with id: " + dto.getBookingId()));;
