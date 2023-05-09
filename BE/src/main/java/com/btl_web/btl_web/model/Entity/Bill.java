@@ -18,7 +18,7 @@ public class Bill {
     private Long id;
 
     @Column(name = "payment_date", nullable = false)
-    private LocalDate paymentDate;
+    private String paymentDate;
 
     @Column(name = "payment_method", nullable = false)
     private String paymentMethod;

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,7 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     private RoomMapper roomMapper;
 
+    @Autowired
     private BookingRepository bookingRepository;
 
     @Override
@@ -66,6 +68,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public RoomResponseDto createRoom(RoomRequestDto roomRequestDto) {
         Room room = roomMapper.toEntity(roomRequestDto);
+        room.setId(null);
         room = roomRepository.save(room);
         return roomMapper.toDto(room);
     }
@@ -88,13 +91,18 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public boolean isRoomAvailable(Long roomId, LocalDate checkin, LocalDate checkout) {
+    public boolean isRoomAvailable(Long roomId, String checkin, String checkout) {
         List<Booking> bookings = bookingRepository.findByRoomId(roomId);
         for (Booking booking : bookings) {
-            if ((checkin.isBefore(booking.getCheckinDate()) && checkout.isAfter(booking.getCheckinDate()) && checkout.isBefore(booking.getCheckoutDate())) ||
-                    (checkin.isAfter(booking.getCheckinDate()) && checkin.isBefore(booking.getCheckoutDate()) && checkout.isAfter(booking.getCheckoutDate())) ||
-                    (booking.getCheckinDate().isBefore(checkin) && booking.getCheckoutDate().isAfter(checkout)) ||
-                    (booking.getCheckinDate().isBefore(checkin) && booking.getCheckoutDate().isAfter(checkin) && booking.getCheckoutDate().isBefore(checkout))) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate ci = LocalDate.parse(checkin, formatter);
+            LocalDate co = LocalDate.parse(checkout, formatter);
+            LocalDate bci = LocalDate.parse(booking.getCheckinDate(), formatter);
+            LocalDate bco = LocalDate.parse(booking.getCheckoutDate(), formatter);
+            if ((ci.isBefore(bci) && co.isAfter(bci) && co.isBefore(bco)) || // checkin < booking.ci < checkout < booking.cc
+                    (ci.isAfter(bci) && ci.isBefore(bco) && co.isAfter(bco)) || // booking.ci < checkin < booking.co < checkout
+                    (bci.isBefore(ci) && bco.isAfter(co)) || // booking.ci < checkin < checkout < booking.co
+                    (bci.isBefore(ci) && bco.isAfter(ci) && bco.isBefore(ci))) { // booking.ci < checkin <
                 return false;
             }
         }

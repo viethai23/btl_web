@@ -1,4 +1,5 @@
 package com.btl_web.btl_web.model.dto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,10 +12,12 @@ public class HotelResponseDto {
     private Long id;
     private String name;
     private String address;
-    private LocalTime openingTime;
-    private LocalTime closingTime;
+    @JsonProperty("opening_time")
+    private String openingTime;
+    @JsonProperty("closing_time")
+    private String closingTime;
     private String amenities;
-    private Integer rating;
+    private double rating;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

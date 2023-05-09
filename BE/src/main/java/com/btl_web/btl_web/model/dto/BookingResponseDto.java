@@ -1,5 +1,6 @@
 package com.btl_web.btl_web.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -10,12 +11,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class BookingResponseDto {
     private Long id;
-    private LocalDate bookingDate;
-    private LocalDate checkinDate;
-    private LocalDate checkoutDate;
-    private Integer numOfGuests;
+    @JsonProperty("booking_date")
+    private String bookingDate;
+    @JsonProperty("checkin_date")
+    private String checkinDate;
+    @JsonProperty("checkout_date")
+    private String checkoutDate;
+    @JsonProperty("num_of_guests")
+    private int numOfGuests;
+    @JsonProperty("client_id")
     private ClientResponseDto client;
     private RoomResponseDto room;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

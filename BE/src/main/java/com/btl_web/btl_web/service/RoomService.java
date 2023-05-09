@@ -22,7 +22,7 @@ public interface RoomService {
     RoomResponseDto createRoom(RoomRequestDto roomRequestDto);
 
     RoomResponseDto updateRoom(Long id, RoomRequestDto roomRequestDto);
-    public boolean isRoomAvailable(Long roomId, LocalDate checkin, LocalDate checkout);
+    public boolean isRoomAvailable(Long roomId, String checkin, String checkout);
 
     void deleteRoom(Long id);
 }

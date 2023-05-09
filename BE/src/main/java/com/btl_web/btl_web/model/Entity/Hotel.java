@@ -24,16 +24,16 @@ public class Hotel {
     private String address;
 
     @Column(name = "opening_time", nullable = false)
-    private LocalTime openingTime;
+    private String openingTime;
 
     @Column(name = "closing_time", nullable = false)
-    private LocalTime closingTime;
+    private String closingTime;
 
     @Column(name = "amenities", nullable = false)
     private String amenities;
 
     @Column(name = "rating")
-    private Integer rating;
+    private double rating;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false, nullable = false)

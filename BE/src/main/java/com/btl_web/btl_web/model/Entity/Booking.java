@@ -18,16 +18,16 @@ public class Booking {
     private Long id;
 
     @Column(name = "booking_date", nullable = false)
-    private LocalDate bookingDate;
+    private String bookingDate;
 
     @Column(name = "checkin_date", nullable = false)
-    private LocalDate checkinDate;
+    private String checkinDate;
 
     @Column(name = "checkout_date", nullable = false)
-    private LocalDate checkoutDate;
+    private String checkoutDate;
 
     @Column(name = "num_of_guests", nullable = false)
-    private Integer numOfGuests;
+    private int numOfGuests;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)

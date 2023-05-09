@@ -20,52 +20,52 @@ public class RoomController {
 
     @Autowired
     private RoomService roomService;
-
+    // Lấy tất cả các phòng
     @GetMapping
     public List<RoomResponseDto> getAllRooms() {
         return roomService.getAllRooms();
     }
-
+    // Lấy phòng theo id hotel
     @GetMapping(params = "hotelId")
     public List<RoomResponseDto> getRoomsByHotelId(@RequestParam Long hotelId) {
         return roomService.getRoomsByHotelId(hotelId);
     }
-
+    // Lấy phòng theo tên
     @GetMapping(params = "name")
     public List<RoomResponseDto> searchRoomsByName(@RequestParam String name) {
         return roomService.searchRoomsByName(name);
     }
-
+    // Lấy phòng sắp xếp
     @GetMapping(params = "ascending")
     public List<RoomResponseDto> getRoomsSortedByPrice(@RequestParam boolean ascending) {
         return roomService.getRoomsSortedByPrice(ascending);
     }
-
+    // Lấy phòng theo id
     @GetMapping("/{id}")
     public RoomResponseDto getRoomById(@PathVariable Long id) {
         return roomService.getRoomById(id);
     }
-
+    // Tạo phòng mới
     @PostMapping
     public ResponseEntity<RoomResponseDto> createRoom(@RequestBody RoomRequestDto roomRequestDto) {
         RoomResponseDto responseDto = roomService.createRoom(roomRequestDto);
         return ResponseEntity.created(URI.create("/api/rooms/" + responseDto.getId()))
                 .body(responseDto);
     }
-
+    // Sửa thông tin phòng
     @PutMapping("/{id}")
     public RoomResponseDto updateRoom(@PathVariable Long id, @RequestBody RoomRequestDto roomRequestDto) {
         return roomService.updateRoom(id, roomRequestDto);
     }
-
+    // Xóa phòng
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
         roomService.deleteRoom(id);
         return ResponseEntity.noContent().build();
     }
-
+    // Kiểm tra phòng đã được đặt chưa
     @GetMapping("/check")
-    public ResponseEntity<Boolean> checkRoomAvailability(@RequestParam Long roomId, @RequestParam LocalDate checkinDate, @RequestParam LocalDate checkoutDate) {
+    public ResponseEntity<Boolean> checkRoomAvailability(@RequestParam Long roomId, @RequestParam String checkinDate, @RequestParam String checkoutDate) {
         Boolean isAvailable = roomService.isRoomAvailable(roomId, checkinDate, checkoutDate);
         return new ResponseEntity<>(isAvailable, HttpStatus.OK);
     }

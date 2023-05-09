@@ -26,13 +26,13 @@ public class Room {
     private String roomType;
 
     @Column(name = "room_size", nullable = false)
-    private Integer roomSize;
+    private int roomSize;
 
     @Column(name = "max_occupancy", nullable = false)
-    private Integer maxOccupancy;
+    private int maxOccupancy;
 
     @Column(name = "price", nullable = false)
-    private BigDecimal price;
+    private double price;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id", nullable = false)

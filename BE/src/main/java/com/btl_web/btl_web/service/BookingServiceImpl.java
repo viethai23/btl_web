@@ -8,32 +8,40 @@ import com.btl_web.btl_web.model.Entity.Room;
 import com.btl_web.btl_web.model.dto.BookingRequestDto;
 import com.btl_web.btl_web.model.dto.BookingResponseDto;
 import com.btl_web.btl_web.repository.BookingRepository;
+import com.btl_web.btl_web.repository.ClientRepository;
+import com.btl_web.btl_web.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
+    private final RoomRepository roomRepository;
+    private final ClientRepository clientRepository;
     private final BookingMapper bookingMapper;
 
-    public BookingServiceImpl(BookingRepository bookingRepository, BookingMapper bookingMapper) {
+    public BookingServiceImpl(BookingRepository bookingRepository, BookingMapper bookingMapper, RoomRepository roomRepository, ClientRepository clientRepository) {
         this.bookingRepository = bookingRepository;
         this.bookingMapper = bookingMapper;
+        this.roomRepository = roomRepository;
+        this.clientRepository = clientRepository;
     }
 
     @Override
     public BookingResponseDto createBooking(BookingRequestDto dto) {
         Booking entity = bookingMapper.toEntity(dto);
         if (dto.getClientId() != null) {
-            Client client = new Client();
-            client.setId(dto.getClientId());
+            Client client = clientRepository.findById(dto.getClientId())
+                    .orElseThrow(() -> new RuntimeException("Client not found with id: " + dto.getClientId()));;
             entity.setClient(client);
         }
         if (dto.getRoomId() != null) {
-            Room room = new Room();
-            room.setId(dto.getRoomId());
+            Room room = roomRepository.findById(dto.getRoomId())
+                    .orElseThrow(() -> new RuntimeException("Client not found with id: " + dto.getClientId()));;
             entity.setRoom(room);
         }
         return bookingMapper.toDto(bookingRepository.save(entity));
@@ -48,13 +56,13 @@ public class BookingServiceImpl implements BookingService {
         entity.setCheckoutDate(dto.getCheckoutDate());
         entity.setNumOfGuests(dto.getNumOfGuests());
         if (dto.getClientId() != null) {
-            Client client = new Client();
-            client.setId(dto.getClientId());
+            Client client = clientRepository.findById(dto.getClientId())
+                    .orElseThrow(() -> new RuntimeException("Client not found with id: " + dto.getClientId()));;
             entity.setClient(client);
         }
         if (dto.getRoomId() != null) {
-            Room room = new Room();
-            room.setId(dto.getRoomId());
+            Room room = roomRepository.findById(dto.getRoomId())
+                    .orElseThrow(() -> new RuntimeException("Client not found with id: " + dto.getClientId()));;
             entity.setRoom(room);
         }
         return bookingMapper.toDto(bookingRepository.save(entity));
