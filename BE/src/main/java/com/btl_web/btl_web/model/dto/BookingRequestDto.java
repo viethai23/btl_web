@@ -15,8 +15,8 @@ public class BookingRequestDto {
     private String checkoutDate;
     @JsonProperty("num_of_guests")
     private int numOfGuests;
-    @JsonProperty("User_id")
-    private Long UserId;
+    @JsonProperty("user_id")
+    private Long userId;
     @JsonProperty("room_id")
     private Long roomId;
 }
