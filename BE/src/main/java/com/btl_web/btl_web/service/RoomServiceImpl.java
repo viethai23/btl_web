@@ -102,7 +102,7 @@ public class RoomServiceImpl implements RoomService {
             if ((ci.isBefore(bci) && co.isAfter(bci) && co.isBefore(bco)) || // checkin < booking.ci < checkout < booking.cc
                     (ci.isAfter(bci) && ci.isBefore(bco) && co.isAfter(bco)) || // booking.ci < checkin < booking.co < checkout
                     (bci.isBefore(ci) && bco.isAfter(co)) || // booking.ci < checkin < checkout < booking.co
-                    (bci.isBefore(ci) && bco.isAfter(ci) && bco.isBefore(ci))) { // booking.ci < checkin <
+                    (ci.isBefore(bci) && bco.isAfter(bci) && co.isBefore(bco))) { // ci < booking.ci < booking.co < co
                 return false;
             }
         }
