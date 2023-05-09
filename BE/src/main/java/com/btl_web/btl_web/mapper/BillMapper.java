@@ -6,6 +6,9 @@ import com.btl_web.btl_web.model.Entity.User;
 import com.btl_web.btl_web.model.dto.*;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Component
 public class BillMapper {
 
@@ -29,7 +32,9 @@ public class BillMapper {
 
         BookingResponseDto bookingDto = new BookingResponseDto();
         bookingDto.setId(bill.getBooking().getId());
-        bookingDto.setBookingDate(bill.getBooking().getBookingDate());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        String formattedDateTime = bill.getBooking().getBookingDate().format(formatter);
+        bookingDto.setBookingDate(formattedDateTime);
         bookingDto.setCheckinDate(bill.getBooking().getCheckinDate());
         bookingDto.setCheckoutDate(bill.getBooking().getCheckoutDate());
         bookingDto.setNumOfGuests(bill.getBooking().getNumOfGuests());

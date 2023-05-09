@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class BookingResponseDto {
     private Long id;
+    @JsonProperty("booking_date")
+    private String bookingDate;
     @JsonProperty("checkin_date")
     private String checkinDate;
     @JsonProperty("checkout_date")
