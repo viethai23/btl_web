@@ -20,8 +20,5 @@ public class RoomResponseDto {
     @JsonProperty("max_occupancy")
     private Integer maxOccupancy;
     private double price;
-    @JsonProperty("hotel_id")
-    private Long hotelId;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private HotelResponseDto hotel;
 }

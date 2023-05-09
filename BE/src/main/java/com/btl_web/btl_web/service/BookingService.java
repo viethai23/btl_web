@@ -13,5 +13,7 @@ public interface BookingService {
     List<BookingResponseDto> getAllBookings();
     List<BookingResponseDto> getAllBookingsByClientId(Long clientId);
     List<BookingResponseDto> getAllBookingsByRoomId(Long roomId);
+    List<String> getRoomsBookedByClient(Long clientId);
+    double getTotalPaymentByClient(Long clientId);
 }
 

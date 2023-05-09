@@ -2,7 +2,6 @@ package com.btl_web.btl_web.model.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

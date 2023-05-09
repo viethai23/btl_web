@@ -18,7 +18,4 @@ public class HotelResponseDto {
     private String closingTime;
     private String amenities;
     private double rating;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
 }

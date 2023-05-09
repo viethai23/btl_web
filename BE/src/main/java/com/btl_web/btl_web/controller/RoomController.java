@@ -65,8 +65,8 @@ public class RoomController {
     }
     // Kiểm tra phòng đã được đặt chưa
     @GetMapping("/check")
-    public ResponseEntity<Boolean> checkRoomAvailability(@RequestParam Long roomId, @RequestParam String checkinDate, @RequestParam String checkoutDate) {
-        Boolean isAvailable = roomService.isRoomAvailable(roomId, checkinDate, checkoutDate);
+    public ResponseEntity<Boolean> checkRoomAvailability(@RequestParam Long roomId, @RequestParam String checkinDate, @RequestParam String checkoutDate, @RequestParam Integer numOfGuests) {
+        Boolean isAvailable = roomService.isRoomAvailable(roomId, checkinDate, checkoutDate, numOfGuests);
         return new ResponseEntity<>(isAvailable, HttpStatus.OK);
     }
 }

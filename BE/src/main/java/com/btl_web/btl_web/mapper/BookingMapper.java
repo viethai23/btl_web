@@ -3,10 +3,7 @@ package com.btl_web.btl_web.mapper;
 import com.btl_web.btl_web.model.Entity.Booking;
 import com.btl_web.btl_web.model.Entity.Client;
 import com.btl_web.btl_web.model.Entity.Room;
-import com.btl_web.btl_web.model.dto.BookingRequestDto;
-import com.btl_web.btl_web.model.dto.BookingResponseDto;
-import com.btl_web.btl_web.model.dto.ClientResponseDto;
-import com.btl_web.btl_web.model.dto.RoomResponseDto;
+import com.btl_web.btl_web.model.dto.*;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
@@ -20,10 +17,8 @@ import java.util.stream.Collectors;
 @Component
 public class BookingMapper {
 
-    private final ModelMapper modelMapper;
 
     public BookingMapper() {
-        this.modelMapper = new ModelMapper();
     }
 
     public Booking toEntity(BookingRequestDto dto) {
@@ -68,6 +63,17 @@ public class BookingMapper {
         roomDto.setRoomType(entity.getRoom().getRoomType());
         roomDto.setPrice(entity.getRoom().getPrice());
         roomDto.setMaxOccupancy(entity.getRoom().getMaxOccupancy());
+
+        HotelResponseDto hotelDto = new HotelResponseDto();
+        hotelDto.setId(entity.getRoom().getHotel().getId());
+        hotelDto.setAddress(entity.getRoom().getHotel().getAddress());
+        hotelDto.setName(entity.getRoom().getHotel().getName());
+        hotelDto.setOpeningTime(entity.getRoom().getHotel().getOpeningTime());
+        hotelDto.setClosingTime(entity.getRoom().getHotel().getClosingTime());
+        hotelDto.setAmenities(entity.getRoom().getHotel().getAmenities());
+        hotelDto.setRating(entity.getRoom().getHotel().getRating());
+        roomDto.setHotel(hotelDto);
+
         dto.setRoom(roomDto);
 
         return dto;

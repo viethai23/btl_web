@@ -19,7 +19,6 @@ public class BookingResponseDto {
     private String checkoutDate;
     @JsonProperty("num_of_guests")
     private int numOfGuests;
-    @JsonProperty("client_id")
     private ClientResponseDto client;
     private RoomResponseDto room;
 }

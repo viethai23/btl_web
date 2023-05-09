@@ -7,6 +7,7 @@ import com.btl_web.btl_web.model.Entity.Room;
 import com.btl_web.btl_web.model.dto.RoomRequestDto;
 import com.btl_web.btl_web.model.dto.RoomResponseDto;
 import com.btl_web.btl_web.repository.BookingRepository;
+import com.btl_web.btl_web.repository.HotelRepository;
 import com.btl_web.btl_web.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +25,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Autowired
     private RoomRepository roomRepository;
+    @Autowired
+    private HotelRepository hotelRepository;
 
     @Autowired
     private RoomMapper roomMapper;
@@ -68,9 +72,12 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public RoomResponseDto createRoom(RoomRequestDto roomRequestDto) {
         Room room = roomMapper.toEntity(roomRequestDto);
-        room.setId(null);
-        room = roomRepository.save(room);
-        return roomMapper.toDto(room);
+        if (roomRequestDto.getHotelId() != null) {
+            Hotel hotel = hotelRepository.findById(roomRequestDto.getHotelId())
+                    .orElseThrow(() -> new RuntimeException("Hotel not found with id: " + roomRequestDto.getHotelId()));
+            room.setHotel(hotel);
+        }
+        return roomMapper.toDto(roomRepository.save(room));
     }
 
     @Override
@@ -82,16 +89,19 @@ public class RoomServiceImpl implements RoomService {
         room.setMaxOccupancy(roomRequestDto.getMaxOccupancy());
         room.setPrice(roomRequestDto.getPrice());
         if (roomRequestDto.getHotelId() != null) {
-            Hotel hotel = new Hotel();
-            hotel.setId(roomRequestDto.getHotelId());
+            Hotel hotel = hotelRepository.findById(roomRequestDto.getHotelId())
+                    .orElseThrow(() -> new RuntimeException("Hotel not found with id: " + roomRequestDto.getHotelId()));
             room.setHotel(hotel);
         }
-        room = roomRepository.save(room);
-        return roomMapper.toDto(room);
+        return roomMapper.toDto(roomRepository.save(room));
     }
 
     @Override
-    public boolean isRoomAvailable(Long roomId, String checkin, String checkout) {
+    public boolean isRoomAvailable(Long roomId, String checkin, String checkout, Integer numOfGuests) {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new RuntimeException("Room not found with id: " + roomId));
+        if(numOfGuests > room.getMaxOccupancy())
+            return false;
         List<Booking> bookings = bookingRepository.findByRoomId(roomId);
         for (Booking booking : bookings) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
