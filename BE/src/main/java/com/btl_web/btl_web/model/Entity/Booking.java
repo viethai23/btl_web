@@ -18,7 +18,7 @@ public class Booking {
     private Long id;
 
     @Column(name = "booking_date", nullable = false)
-    private String bookingDate;
+    private LocalDateTime bookingDate;
 
     @Column(name = "checkin_date", nullable = false)
     private String checkinDate;

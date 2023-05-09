@@ -18,7 +18,6 @@ public class BookingMapper {
 
     public Booking toEntity(BookingRequestDto dto) {
         Booking booking = new Booking();
-        booking.setBookingDate(dto.getBookingDate());
         booking.setCheckinDate(dto.getCheckinDate());
         booking.setCheckoutDate(dto.getCheckoutDate());
         booking.setNumOfGuests(dto.getNumOfGuests());
@@ -38,7 +37,6 @@ public class BookingMapper {
         BookingResponseDto dto = new BookingResponseDto();
 
         dto.setId(entity.getId());
-        dto.setBookingDate(entity.getBookingDate());
         dto.setCheckinDate(entity.getCheckinDate());
         dto.setCheckoutDate(entity.getCheckoutDate());
         dto.setNumOfGuests(entity.getNumOfGuests());

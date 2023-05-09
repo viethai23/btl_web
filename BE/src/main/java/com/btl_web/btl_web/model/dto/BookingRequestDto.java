@@ -9,8 +9,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookingRequestDto {
-    @JsonProperty("booking_date")
-    private String bookingDate;
     @JsonProperty("checkin_date")
     private String checkinDate;
     @JsonProperty("checkout_date")
