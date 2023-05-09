@@ -9,7 +9,6 @@ import lombok.*;
 public class UserRequestDto {
     private String username;
     private String password;
-    private String identifier;
     @JsonProperty("full_name")
     private String fullName;
     private String address;
