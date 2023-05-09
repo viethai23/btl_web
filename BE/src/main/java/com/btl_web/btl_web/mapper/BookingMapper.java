@@ -21,15 +21,6 @@ public class BookingMapper {
         booking.setCheckinDate(dto.getCheckinDate());
         booking.setCheckoutDate(dto.getCheckoutDate());
         booking.setNumOfGuests(dto.getNumOfGuests());
-
-        User user = new User();
-        user.setId(dto.getUserId());
-        booking.setUser(user);
-
-        Room room = new Room();
-        room.setId(dto.getRoomId());
-        booking.setRoom(room);
-
         return booking;
     }
 
@@ -37,8 +28,9 @@ public class BookingMapper {
         BookingResponseDto dto = new BookingResponseDto();
 
         dto.setId(entity.getId());
-        dto.setCheckinDate(entity.getCheckinDate());
-        dto.setCheckoutDate(entity.getCheckoutDate());
+        dto.setBookingDate(entity.getBookingDate());
+//        dto.setCheckinDate(entity.getCheckinDate());
+//        dto.setCheckoutDate(entity.getCheckoutDate());
         dto.setNumOfGuests(entity.getNumOfGuests());
 
         UserResponseDto UserDto = new UserResponseDto();

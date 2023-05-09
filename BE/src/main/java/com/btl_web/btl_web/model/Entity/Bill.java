@@ -23,6 +23,9 @@ public class Bill {
     @Column(name = "payment_method", nullable = false)
     private String paymentMethod;
 
+    @Column(name = "amount_total", nullable = false)
+    private double amountTotal;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_id", nullable = false)
     private Booking booking;

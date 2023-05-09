@@ -16,11 +16,7 @@ public class BillMapper {
 
     public static Bill toEntity(BillRequestDto requestDto) {
         Bill bill = new Bill();
-        bill.setPaymentDate(requestDto.getPaymentDate());
         bill.setPaymentMethod(requestDto.getPaymentMethod());
-        Booking booking = new Booking();
-        booking.setId(requestDto.getBookingId());
-        bill.setBooking(booking);
         return bill;
     }
 
@@ -29,12 +25,11 @@ public class BillMapper {
         dto.setId(bill.getId());
         dto.setPaymentDate(bill.getPaymentDate());
         dto.setPaymentMethod(bill.getPaymentMethod());
+        dto.setAmountTotal(bill.getAmountTotal());
 
         BookingResponseDto bookingDto = new BookingResponseDto();
         bookingDto.setId(bill.getBooking().getId());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        String formattedDateTime = bill.getBooking().getBookingDate().format(formatter);
-        bookingDto.setBookingDate(formattedDateTime);
+        bookingDto.setBookingDate(bill.getBooking().getBookingDate());
         bookingDto.setCheckinDate(bill.getBooking().getCheckinDate());
         bookingDto.setCheckoutDate(bill.getBooking().getCheckoutDate());
         bookingDto.setNumOfGuests(bill.getBooking().getNumOfGuests());

@@ -12,6 +12,8 @@ import com.btl_web.btl_web.repository.RoomRepository;
 import com.btl_web.btl_web.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +47,12 @@ public class BookingServiceImpl implements BookingService {
                     .orElseThrow(() -> new RuntimeException("User not found with id: " + dto.getUserId()));;
             entity.setRoom(room);
         }
+        // Lấy thời gian hiện tại là thời gian booking lúc tạo mới 1 booking
+        LocalDateTime dateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String time_now = dateTime.format(formatter);
+        entity.setBookingDate(time_now);
+
         return bookingMapper.toDto(bookingRepository.save(entity));
     }
 
@@ -52,7 +60,6 @@ public class BookingServiceImpl implements BookingService {
     public BookingResponseDto updateBooking(Long id, BookingRequestDto dto) {
         Booking entity = bookingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
-        entity.setBookingDate(dto.getBookingDate());
         entity.setCheckinDate(dto.getCheckinDate());
         entity.setCheckoutDate(dto.getCheckoutDate());
         entity.setNumOfGuests(dto.getNumOfGuests());
