@@ -16,5 +16,6 @@ public class RoomRequestDto {
     @JsonProperty("max_occupancy")
     private Integer maxOccupancy;
     private double price;
+    @JsonProperty("hotel_id")
     private Long hotelId;
 }

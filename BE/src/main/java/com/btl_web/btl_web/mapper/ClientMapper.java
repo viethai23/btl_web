@@ -5,6 +5,7 @@ import com.btl_web.btl_web.model.dto.ClientRequestDto;
 import com.btl_web.btl_web.model.dto.ClientResponseDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.Mapping;
 
 @Component
 public class ClientMapper {
