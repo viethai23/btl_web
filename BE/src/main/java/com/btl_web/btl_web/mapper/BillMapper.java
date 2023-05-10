@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class BillMapper {
+public class BillMapper { // Chuyển từ request sang entity và từ entity sang response
 
     public BillMapper(){};
 

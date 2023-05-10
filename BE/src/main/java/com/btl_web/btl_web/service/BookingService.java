@@ -14,6 +14,7 @@ public interface BookingService {
     List<BookingResponseDto> getAllBookingsByUserId(Long UserId);
     List<BookingResponseDto> getAllBookingsByRoomId(Long roomId);
     List<String> getRoomsBookedByUser(Long UserId);
+    public boolean isRoomAvailable(Long roomId, String checkin, String checkout, Integer numOfGuests);
     double getTotalPaymentByUser(Long UserId);
 }
 

@@ -3,10 +3,12 @@ package com.btl_web.btl_web.controller;
 import com.btl_web.btl_web.model.dto.UserRequestDto;
 import com.btl_web.btl_web.model.dto.UserResponseDto;
 import com.btl_web.btl_web.service.UserService;
+import com.btl_web.btl_web.validation.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.util.Validate;
 
 import java.net.URI;
 import java.util.List;
@@ -15,16 +17,21 @@ import java.util.List;
 @RequestMapping("/api/users")
 @CrossOrigin
 public class UserController {
-
     private final UserService userService;
+    private final Validation validation;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, Validation validation) {
         this.userService = userService;
+        this.validation = validation;
     }
     //Thêm 1 user (dùng cho chức năng đăng ký tài khoản)
     @PostMapping
-    public ResponseEntity<UserResponseDto> addUser(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<?> addUser(@RequestBody UserRequestDto userRequestDto) {
+        List<String> list_error = validation.getInputError(userRequestDto);
+        if (!list_error.isEmpty()){
+            return new ResponseEntity<>(list_error, HttpStatus.BAD_REQUEST);
+        }
         UserResponseDto userResponseDto = userService.addUser(userRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDto);
     }
@@ -54,9 +61,13 @@ public class UserController {
     }
     // Sửa User
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long id, @RequestBody UserRequestDto requestDto) {
-        UserResponseDto User = userService.updateUser(id, requestDto);
-        return ResponseEntity.ok(User);
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserRequestDto requestDto) {
+        List<String> list_error = validation.getInputError(requestDto);
+        if (!list_error.isEmpty()){
+            return new ResponseEntity<>(list_error, HttpStatus.BAD_REQUEST);
+        }
+        UserResponseDto user = userService.updateUser(id, requestDto);
+        return ResponseEntity.ok(user);
     }
     // Xóa User
     @DeleteMapping("/{id}")

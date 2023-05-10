@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class BookingMapper {
+public class BookingMapper { // Chuyển từ request sang entity và từ entity sang response
 
 
     public BookingMapper() {

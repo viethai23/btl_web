@@ -12,6 +12,7 @@ import com.btl_web.btl_web.repository.RoomRepository;
 import com.btl_web.btl_web.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -126,5 +127,28 @@ public class BookingServiceImpl implements BookingService {
             totalPayment += booking.getRoom().getPrice();
         }
         return totalPayment;
+    }
+
+    @Override
+    public boolean isRoomAvailable(Long roomId, String checkin, String checkout, Integer numOfGuests) {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new RuntimeException("Room not found with id: " + roomId));
+        if(numOfGuests > room.getMaxOccupancy())
+            return false;
+        List<Booking> bookings = bookingRepository.findByRoomId(roomId);
+        for (Booking booking : bookings) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate ci = LocalDate.parse(checkin, formatter);
+            LocalDate co = LocalDate.parse(checkout, formatter);
+            LocalDate bci = LocalDate.parse(booking.getCheckinDate(), formatter);
+            LocalDate bco = LocalDate.parse(booking.getCheckoutDate(), formatter);
+            if ((ci.isBefore(bci) && co.isAfter(bci) && co.isBefore(bco)) || // checkin < booking.ci < checkout < booking.cc
+                    (ci.isAfter(bci) && ci.isBefore(bco) && co.isAfter(bco)) || // booking.ci < checkin < booking.co < checkout
+                    (bci.isBefore(ci) && bco.isAfter(co)) || // booking.ci < checkin < checkout < booking.co
+                    (ci.isBefore(bci) && bco.isAfter(bci) && co.isBefore(bco))) { // ci < booking.ci < booking.co < co
+                return false;
+            }
+        }
+        return true;
     }
 }

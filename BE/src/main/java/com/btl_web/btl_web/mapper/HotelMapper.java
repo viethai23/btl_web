@@ -7,7 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HotelMapper {
+public class HotelMapper { // Chuyển từ request sang entity và từ entity sang response
 
     private ModelMapper modelMapper;
 

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserMapper {
+public class UserMapper { // Chuyển từ request sang entity và từ entity sang response
 
     private final ModelMapper modelMapper;
 

@@ -6,7 +6,7 @@ import com.btl_web.btl_web.model.dto.*;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RoomMapper {
+public class RoomMapper { // Chuyển từ request sang entity và từ entity sang response
 
 
     public RoomMapper() {

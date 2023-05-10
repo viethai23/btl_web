@@ -3,6 +3,8 @@ package com.btl_web.btl_web.controller;
 import com.btl_web.btl_web.model.dto.HotelRequestDto;
 import com.btl_web.btl_web.model.dto.HotelResponseDto;
 import com.btl_web.btl_web.service.HotelService;
+import com.btl_web.btl_web.validation.Validation;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,20 +17,30 @@ import java.util.List;
 public class HotelController {
 
     private final HotelService hotelService;
+    private final Validation validation;
 
-    public HotelController(HotelService hotelService) {
+    public HotelController(HotelService hotelService, Validation validation) {
         this.hotelService = hotelService;
+        this.validation = validation;
     }
     //Tạo khách sạn mới
     @PostMapping
-    public ResponseEntity<HotelResponseDto> create(@RequestBody HotelRequestDto requestDto) {
+    public ResponseEntity<?> create(@RequestBody HotelRequestDto requestDto) {
+        List<String> list_error = validation.getInputError(requestDto);
+        if (!list_error.isEmpty()){
+            return new ResponseEntity<>(list_error, HttpStatus.BAD_REQUEST);
+        }
         HotelResponseDto responseDto = hotelService.create(requestDto);
         return ResponseEntity.created(URI.create("/api/hotels/" + responseDto.getId()))
                 .body(responseDto);
     }
     //Update thông tin khách sạn
     @PutMapping("/{id}")
-    public ResponseEntity<HotelResponseDto> update(@PathVariable Long id, @RequestBody HotelRequestDto requestDto) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody HotelRequestDto requestDto) {
+        List<String> list_error = validation.getInputError(requestDto);
+        if (!list_error.isEmpty()){
+            return new ResponseEntity<>(list_error, HttpStatus.BAD_REQUEST);
+        }
         HotelResponseDto responseDto = hotelService.update(id, requestDto);
         return ResponseEntity.ok(responseDto);
     }
