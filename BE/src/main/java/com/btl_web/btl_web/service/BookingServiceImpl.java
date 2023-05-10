@@ -39,12 +39,12 @@ public class BookingServiceImpl implements BookingService {
         Booking entity = bookingMapper.toEntity(dto);
         if (dto.getUserId() != null) {
             User user = userRepository.findById(dto.getUserId())
-                    .orElseThrow(() -> new RuntimeException("User not found with id: " + dto.getUserId()));;
+                    .orElseThrow(() -> new RuntimeException("User not found with id: " + dto.getUserId()));
             entity.setUser(user);
         }
         if (dto.getRoomId() != null) {
             Room room = roomRepository.findById(dto.getRoomId())
-                    .orElseThrow(() -> new RuntimeException("User not found with id: " + dto.getUserId()));;
+                    .orElseThrow(() -> new RuntimeException("User not found with id: " + dto.getUserId()));
             entity.setRoom(room);
         }
         // Lấy thời gian hiện tại là thời gian booking lúc tạo mới 1 booking
