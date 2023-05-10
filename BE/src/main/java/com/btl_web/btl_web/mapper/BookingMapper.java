@@ -29,8 +29,8 @@ public class BookingMapper { // Chuyển từ request sang entity và từ entit
 
         dto.setId(entity.getId());
         dto.setBookingDate(entity.getBookingDate());
-//        dto.setCheckinDate(entity.getCheckinDate());
-//        dto.setCheckoutDate(entity.getCheckoutDate());
+        dto.setCheckinDate(entity.getCheckinDate());
+        dto.setCheckoutDate(entity.getCheckoutDate());
         dto.setNumOfGuests(entity.getNumOfGuests());
 
         UserResponseDto UserDto = new UserResponseDto();
