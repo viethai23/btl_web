@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -109,6 +110,19 @@ public class BillServiceImpl implements BillService {
         } else {
             throw new RuntimeException("Bill not found with id " + id);
         }
+    }
+
+    @Override
+    public List<BillResponseDto> getBillsByUserId(Long userId) {
+        List<Booking> bookings = bookingRepository.findByUserId(userId);
+        List<BillResponseDto> billResponseDtos = new ArrayList<>();
+        for (Booking booking : bookings) {
+            List<Bill> bills = billRepository.findByBookingId(booking.getId());
+            for (Bill bill : bills) {
+                billResponseDtos.add(billMapper.toDto(bill));
+            }
+        }
+        return billResponseDtos;
     }
 
 }

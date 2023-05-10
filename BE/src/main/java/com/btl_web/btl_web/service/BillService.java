@@ -12,4 +12,5 @@ public interface BillService {
     public BillResponseDto updateBill(Long id, BillRequestDto requestDto);
     public void deleteBill(Long id);
 //    public Double calculateTotalPaymentByUser(Long UserId);
+    public List<BillResponseDto> getBillsByUserId(Long userId);
 }

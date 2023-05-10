@@ -4,6 +4,8 @@ import com.btl_web.btl_web.model.dto.BillRequestDto;
 import com.btl_web.btl_web.model.dto.BillResponseDto;
 import com.btl_web.btl_web.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +39,12 @@ public class BillController {
     @DeleteMapping("/{id}")
     public void deleteBill(@PathVariable("id") Long id) {
         billService.deleteBill(id);
+    }
+
+    @GetMapping("/{userId}/bills")
+    public ResponseEntity<List<BillResponseDto>> getBillsByUserId(@PathVariable Long userId) {
+        List<BillResponseDto> billResponseDtos = billService.getBillsByUserId(userId);
+        return new ResponseEntity<>(billResponseDtos, HttpStatus.OK);
     }
 
 }
