@@ -11,7 +11,7 @@ const LoginForm = ({ onFinish }) => {
       initialValues={{ remember: true }}
       onFinish={onFinish}
     >
-      <h1 className="login-form-title">Welcome to My Hotel</h1>
+      <h1 className="login-form-title">Hotel reservation system</h1>
       <Form.Item
         label="Username"
         name="username"
@@ -37,6 +37,32 @@ const LoginForm = ({ onFinish }) => {
           Log in
         </Button>
       </Form.Item>
+
+      <Form.Item>
+        <Button
+          className="login-form-button"
+          type="primary"
+          htmlType="submit"
+        >
+          Sign up for free
+        </Button>
+      </Form.Item>
+    </Form>
+  );
+};
+
+const SignUpForm = ({ onFinish }) => {
+  return (
+    <Form>
+      <Form.Item>
+        <Button
+          className="login-form-button"
+          type="primary"
+          htmlType="submit"
+        >
+          Sign up for free
+        </Button>
+      </Form.Item>
     </Form>
   );
 };
@@ -57,12 +83,26 @@ const LoginPage = ({ setuser }) => {
         console.log(error);
       });
   };
-
+  const handleSignUp = (values) => {
+    checklogin(values)
+      .then((response) => {
+        setuser(response.data);
+        notification["success"]({
+          message: "Log in successful",
+          placement: "topRight",
+        });
+        navigate("/hotel");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <div
       className="login-container"
     >
       <LoginForm onFinish={handleFinish} />
+      {/* <SignUpForm onFinish={handleSignUp} /> */}
     </div>
   );
 };

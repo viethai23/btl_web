@@ -70,7 +70,9 @@ const Room = (props) => {
     } else {
       getroombyhotel(id)
         .then((response) => {
-          setrooms(response.data);
+          setTimeout(() => {
+            setrooms(response.data);
+          }, 666);
         })
         .catch((error) => console.log(error));
       console.log("by hotel works with "+id)
