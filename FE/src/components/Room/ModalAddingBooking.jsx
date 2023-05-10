@@ -5,7 +5,6 @@ import {
   InputNumber,
   Modal,
   notification,
-  Select,
 } from "antd";
 import { useEffect, useState } from "react";
 import { getbookingbyid, postbooking } from "../../apis/bookingApi";
@@ -13,7 +12,6 @@ import { getbookingbyid, postbooking } from "../../apis/bookingApi";
 const ModalAddingBooking = (props) => {
   const [bill,setbill] = useState(null);
   const [userId, setUserId] = useState(null);
-  const [booking,setbooking] = useState(null);
   const [roomName, setRoomName] = useState("");
   const [max, setMax] = useState(2);
 
@@ -37,8 +35,7 @@ const ModalAddingBooking = (props) => {
       console.log(booking, props.editModal.id, userId)
       postbooking(booking, props.editModal.id, userId)
         .then((response) => {
-          setbooking(response.data)
-          displayData()
+          displayData(response.data)
         })
         .catch((e) => {
           notification["error"]({
@@ -49,12 +46,12 @@ const ModalAddingBooking = (props) => {
         });
     }
   };
-  const displayData = () => {
+  const displayData = (booking) => {
     getbookingbyid(booking.id)
       .then((response) => {
         setbill(response.data);
         notification["success"]({
-          message: "Dat phòng khách sạn thành công",
+          message: "Đặt phòng khách sạn thành công",
           placement: "topRight",
         });
         console.log(booking.id)

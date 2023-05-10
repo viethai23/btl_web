@@ -241,6 +241,12 @@ const Booking = (props) => {
       width: "8vw",
     },
     {
+      title: "Tên người dùng",
+      dataIndex: ["user", "full_name"],
+      key: "full_name",
+      ...getColumnSearchProps("full_name"),
+    },
+    {
       title: "Tùy chọn",
       key: "action",
       width: "10vw",
@@ -284,9 +290,9 @@ const Booking = (props) => {
   );
   const actionMenuAdmin = (record) => (
     <Menu>
-      <Menu.Item key="1">
+      {/*<Menu.Item key="1">
         <a onClick={() => setEditModal(record)}>Sửa</a>
-      </Menu.Item>
+  </Menu.Item>*/}
       <Menu.Item key="2">
         <Popconfirm
           title="Bạn có muốn xóa đặt phòng này không?"

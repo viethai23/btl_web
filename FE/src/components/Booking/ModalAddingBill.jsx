@@ -31,7 +31,7 @@ const ModalAddingBill = (props) => {
             placement: "topRight",
           });
           props.setaddbill(null);
-          props.setPaidBookings([...paidBookings, booking.data.id]);
+          props.setPaidBookings([...props.paidBookings, booking.data.id]);
         })
         .catch((error) => console.log(error));
     
@@ -40,13 +40,13 @@ const ModalAddingBill = (props) => {
   return (
     <div>
       <Modal
-        title={"Thanh toán thành công"}
+        title={`Thanh toán đặt phòng`}
         visible={props.addbill}
-        onCancel={onCancelModal} // Ham onCancelModal se duoc goi khi nguoi dung bam nut tat hoac cancel
+        onCancel={onCancelModal}
         destroyOnClose={true}
         footer={null}
       >
-        <Form //Khi hoan tat form va submit, tat ca du lieu se duoc goi vao 1 doi tuong va chui vao function onFinishModal(). Moi mot doi tuong se co thuoc tinh duoc dat sau prop 'name' cua form item
+        <Form 
           name="nest-messages"
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
@@ -63,7 +63,7 @@ const ModalAddingBill = (props) => {
               },
             ]}
           >
-            <Select defaultValue="Cash" style={{ width: "18vw" }}>
+            <Select defaultValue="Cash" style={{ width: "10vw" }}>
               <Option value="Debit Card">Debit card</Option>
               <Option value="Cash">Cash</Option>
               <Option value="Credit Card">Credit card</Option>
