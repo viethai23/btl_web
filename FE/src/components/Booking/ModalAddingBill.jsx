@@ -26,10 +26,12 @@ const ModalAddingBill = (props) => {
   const displayData = (booking) => {
       getbillbyid(booking.data.id)
         .then((response) => {
-          notification["success"]({
-            message:"Thanh toán thành công",
-            placement: "topRight",
-          });
+          // notification["success"]({
+          //   message:"Thanh toán thành công",
+          //   placement: "topRight",
+          // });
+          window.location.href = 'run.html'
+          console.log("load here");
           props.setaddbill(null);
           props.setPaidBookings([...props.paidBookings, booking.data.id]);
         })
@@ -58,14 +60,14 @@ const ModalAddingBill = (props) => {
             name="payment_method"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Vui lòng chọn hình thức thanh toán!",
               },
             ]}
           >
-            <Select defaultValue="Cash" style={{ width: "10vw" }}>
+            <Select defaultValue="Debit card" style={{ width: "10vw" }}>
               <Option value="Debit Card">Debit card</Option>
-              <Option value="Cash">Cash</Option>
+              <Option value="MetaMask">MetaMask</Option>
               <Option value="Credit Card">Credit card</Option>
             </Select>
           </Form.Item>
