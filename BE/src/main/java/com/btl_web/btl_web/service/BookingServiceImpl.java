@@ -142,12 +142,11 @@ public class BookingServiceImpl implements BookingService {
             LocalDate co = LocalDate.parse(checkout, formatter);
             LocalDate bci = LocalDate.parse(booking.getCheckinDate(), formatter);
             LocalDate bco = LocalDate.parse(booking.getCheckoutDate(), formatter);
-            if ((ci.isBefore(bci) && co.isAfter(bci) && co.isBefore(bco)) || // checkin < booking.ci < checkout < booking.cc
-                    (ci.isAfter(bci) && ci.isBefore(bco) && co.isAfter(bco)) || // booking.ci < checkin < booking.co < checkout
-                    (bci.isBefore(ci) && bco.isAfter(co)) || // booking.ci < checkin < checkout < booking.co
-                    (ci.isBefore(bci) && bco.isAfter(bci) && co.isBefore(bco))) { // ci < booking.ci < booking.co < co
-                return false;
+            if(ci.isBefore(co)) {
+                if(ci.isAfter(bco) || co.isBefore(bci))
+                    continue;
             }
+            return false;
         }
         return true;
     }
