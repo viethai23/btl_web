@@ -26,14 +26,8 @@ const ModalAddingBill = (props) => {
   const displayData = (booking) => {
       getbillbyid(booking.data.id)
         .then((response) => {
-          // notification["success"]({
-          //   message:"Thanh toán thành công",
-          //   placement: "topRight",
-          // });
           window.location.href = 'run.html'
-          console.log("load here");
           props.setaddbill(null);
-          props.setPaidBookings([...props.paidBookings, booking.data.id]);
         })
         .catch((error) => console.log(error));
     
@@ -42,13 +36,13 @@ const ModalAddingBill = (props) => {
   return (
     <div>
       <Modal
-        title={`Thanh toán đặt phòng`}
+        title={"Thanh toán thành công"}
         visible={props.addbill}
-        onCancel={onCancelModal}
+        onCancel={onCancelModal} // Ham onCancelModal se duoc goi khi nguoi dung bam nut tat hoac cancel
         destroyOnClose={true}
         footer={null}
       >
-        <Form 
+        <Form //Khi hoan tat form va submit, tat ca du lieu se duoc goi vao 1 doi tuong va chui vao function onFinishModal(). Moi mot doi tuong se co thuoc tinh duoc dat sau prop 'name' cua form item
           name="nest-messages"
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
@@ -58,14 +52,8 @@ const ModalAddingBill = (props) => {
           <Form.Item
             label="Hình thức thanh toán"
             name="payment_method"
-            rules={[
-              {
-                required: false,
-                message: "Vui lòng chọn hình thức thanh toán!",
-              },
-            ]}
           >
-            <Select defaultValue="Debit card" style={{ width: "10vw" }}>
+            <Select defaultValue="Debit Card" style={{ width: "18vw" }}>
               <Option value="Debit Card">Debit card</Option>
               <Option value="MetaMask">MetaMask</Option>
               <Option value="Credit Card">Credit card</Option>

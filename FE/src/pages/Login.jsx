@@ -1,74 +1,84 @@
 import { Button, Form, Input, notification } from "antd";
 import { checklogin } from "../apis/loginApi";
-import "./login.css";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
-const LoginForm = ({ onFinish }) => {
+const LoginFormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const LoginHeader = styled.h1`
+  margin-bottom: 24px;
+  font-weight: bold;
+  font-size: 32px;
+  line-height: 1.5;
+  text-align: center;
+`;
+
+const LoginForm = ({ onFinish, openSignup }) => {
   return (
-    <Form
-      className="login-form"
-      name="login-form"
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-    >
-      <h1 className="login-form-title">Hotel reservation system</h1>
-      <Form.Item
-        label="Username"
-        name="username"
-        rules={[{ required: true, message: "Please input your username!" }]}
+    <LoginFormContainer>
+      <LoginHeader>Welcome to My Hotel</LoginHeader>
+      <Form
+        name="login-form"
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
       >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        label="Password"
-        name="password"
-        rules={[{ required: true, message: "Please input your password!" }]}
-      >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item>
-        <Button
-          className="login-form-button"
-          type="primary"
-          htmlType="submit"
+        <Form.Item
+          label="Username"
+          name="username"
+          rules={[{ required: true, message: "Please input your username!" }]}
         >
-          Log in
-        </Button>
-      </Form.Item>
+          <Input />
+        </Form.Item>
 
-      <Form.Item>
-        <Button
-          className="login-form-button"
-          type="primary"
-          htmlType="submit"
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[{ required: true, message: "Please input your password!" }]}
         >
-          Sign up for free
+          <Input.Password />
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="primary" htmlType="submit" block>
+            Log in
+          </Button>
+        </Form.Item>
+      </Form>
+      <div style={{ marginTop: "24px", textAlign: "center" }}>
+        <span>Don't have an account?</span>{" "}
+        <Button type="link" onClick={openSignup}>
+          Sign up now
         </Button>
-      </Form.Item>
-    </Form>
+      </div>
+    </LoginFormContainer>
   );
 };
 
-const SignUpForm = ({ onFinish }) => {
-  return (
-    <Form>
-      <Form.Item>
-        <Button
-          className="login-form-button"
-          type="primary"
-          htmlType="submit"
-        >
-          Sign up for free
-        </Button>
-      </Form.Item>
-    </Form>
-  );
-};
+const LoginPageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+`;
+
+const LoginPageWrapper = styled.div`
+  width: 400px;
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+`;
 
 const LoginPage = ({ setuser }) => {
   const navigate = useNavigate();
+  const openSignup = () => {
+    navigate("/signup");
+  };
   const handleFinish = (values) => {
     checklogin(values)
       .then((response) => {
@@ -83,27 +93,13 @@ const LoginPage = ({ setuser }) => {
         console.log(error);
       });
   };
-  const handleSignUp = (values) => {
-    checklogin(values)
-      .then((response) => {
-        setuser(response.data);
-        notification["success"]({
-          message: "Log in successful",
-          placement: "topRight",
-        });
-        navigate("/hotel");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+
   return (
-    <div
-      className="login-container"
-    >
-      <LoginForm onFinish={handleFinish} />
-      {/* <SignUpForm onFinish={handleSignUp} /> */}
-    </div>
+    <LoginPageContainer>
+      <LoginPageWrapper>
+        <LoginForm onFinish={handleFinish} openSignup={openSignup} />
+      </LoginPageWrapper>
+    </LoginPageContainer>
   );
 };
 

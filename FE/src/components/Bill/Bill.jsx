@@ -207,7 +207,7 @@ const Bill = (props) => {
       key: "payment_method",
     },
     {
-      title: "Giá phòng",
+      title: "Số lượng",
       dataIndex: "amount_total",
       key: "amount_total",
       sorter: (a, b) => a.amount_total - b.amount_total,

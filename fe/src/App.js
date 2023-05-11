@@ -11,6 +11,7 @@ import Bill from "./components/Bill/Bill"
 import { useState } from "react";
 import LoginPage from "./pages/Login";
 import Booking from "./components/Booking/Booking";
+import Signup from "./pages/Signup";
 
 const Component = styled.div`
   display: flex;
@@ -22,6 +23,7 @@ function App() {
     <BrowserRouter>
         <Routes>
           <Route path={PATH.LOGIN} element={<LoginPage setuser={setuser} />} />
+          <Route path={PATH.SIGNUP} element={<Signup setuser={setuser}/> } />
         </Routes>
     </BrowserRouter>
   );
@@ -32,7 +34,6 @@ function App() {
         <SideBar user={user} width={200} style={{ background: "#fff" }} />
         <Routes>
           <Route path={PATH.ROOM_HOTEL} element={<Room user={user} />} />
-          <Route path={PATH.LOGIN} element={<LoginPage setuser={setuser} />} />
           <Route path={PATH.HOTEL} element={<Hotel user={user} />} />
           <Route path={PATH.ROOM} element={<Room user={user} />} />
           <Route path={PATH.CUSTOMER} element={<Customer user={user} />} />

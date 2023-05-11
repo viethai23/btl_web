@@ -72,12 +72,12 @@ const Room = (props) => {
         .then((response) => {
           setTimeout(() => {
             setrooms(response.data);
-          }, 666);
+          }, 222);
         })
         .catch((error) => console.log(error));
       console.log("by hotel works with "+id)
     }
-  },[rooms,id]); //thêm [room] sẽ tạo vòng lặp vô hạn nhưng chính xác, chỉ dùng trong tg ngắn
+  },[id]); //thêm [room] sẽ tạo vòng lặp vô hạn nhưng chính xác, chỉ dùng trong tg ngắn
 
   const onConfirmDelete = () => {
     deleteroom(wantDelete)

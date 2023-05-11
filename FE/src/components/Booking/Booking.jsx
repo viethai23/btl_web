@@ -11,10 +11,7 @@ import {
 } from "antd";
 import { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { deletehotel, gethotel } from "../../apis/hotelApi";
-import ModalBooking from "./ModalBooking";
 import {
   deletebooking,
   getbooking,
@@ -45,8 +42,6 @@ const Action = styled.div`
 const Booking = (props) => {
   const { user } = props;
   const [bookings, setbookings] = useState([]);
-  const [paidBookings, setPaidBookings] = useState([]);
-  const [editModal, setEditModal] = useState(null);
   const [addbill, setaddbill] = useState(null);
   const [wantDelete, setWantDelete] = useState(null);
   const [searchText, setSearchText] = useState("");
@@ -241,20 +236,11 @@ const Booking = (props) => {
       width: "8vw",
     },
     {
-      title: "Tên người dùng",
-      dataIndex: ["user", "full_name"],
-      key: "full_name",
-      ...getColumnSearchProps("full_name"),
-    },
-    {
       title: "Tùy chọn",
       key: "action",
       width: "10vw",
       render: (record) => (
         <Action>
-          {paidBookings.includes(record.id) ? (
-            <span>Đã thanh toán</span>
-          ) : (
             <Dropdown overlay={actionMenu(record)}>
               <Button>
                 <Space>
@@ -263,9 +249,10 @@ const Booking = (props) => {
                 </Space>
               </Button>
             </Dropdown>
-          )}
+          
         </Action>
-      ),}
+      ),
+    },
   ];
 
   const actionMenuClient = (record) => (
@@ -273,7 +260,7 @@ const Booking = (props) => {
       {/*<Menu.Item key="1">
         <a onClick={() => setEditModal(record)}>Sửa</a>
   </Menu.Item>*/}
-      <Menu.Item key="2">
+      <Menu.Item key="1">
         <Popconfirm
           title="Bạn có muốn xóa đặt phòng này không?"
           onConfirm={onConfirmDelete}
@@ -283,17 +270,14 @@ const Booking = (props) => {
           <a onClick={() => setWantDelete(record.id)}>Xóa</a>
         </Popconfirm>
       </Menu.Item>
-      <Menu.Item key="3">
+      <Menu.Item key="2">
         <a onClick={() => setaddbill(record)}>Thanh toán</a>
       </Menu.Item>
     </Menu>
   );
   const actionMenuAdmin = (record) => (
     <Menu>
-      {/*<Menu.Item key="1">
-        <a onClick={() => setEditModal(record)}>Sửa</a>
-  </Menu.Item>*/}
-      <Menu.Item key="2">
+      <Menu.Item key="1">
         <Popconfirm
           title="Bạn có muốn xóa đặt phòng này không?"
           onConfirm={onConfirmDelete}
@@ -337,8 +321,6 @@ const Booking = (props) => {
             <ModalAddingBill
               addbill={addbill}
               setaddbill={setaddbill}
-              paidBookings = {paidBookings}
-              setPaidBookings = {setPaidBookings}
             />
           )}
           <BookingTable>

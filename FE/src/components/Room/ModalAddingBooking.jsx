@@ -27,13 +27,13 @@ const ModalAddingBooking = (props) => {
     props.setEditModal(null);
   };
 
-  const onFinishModal = async (booking) => {
-    booking.checkin_date = booking.checkin_date.format("YYYY-MM-DD");
-    booking.checkout_date = booking.checkout_date.format("YYYY-MM-DD");
-    console.log(booking)
+  const onFinishModal = async (value) => {
+    value.checkin_date = value.checkin_date.format("YYYY-MM-DD");
+    value.checkout_date = value.checkout_date.format("YYYY-MM-DD");
+    console.log(value)
     if (props.editModal) {
-      console.log(booking, props.editModal.id, userId)
-      postbooking(booking, props.editModal.id, userId)
+      console.log(value, props.editModal.id, userId)
+      postbooking(value, props.editModal.id, userId)
         .then((response) => {
           displayData(response.data)
         })
@@ -46,15 +46,15 @@ const ModalAddingBooking = (props) => {
         });
     }
   };
-  const displayData = (booking) => {
-    getbookingbyid(booking.id)
+  const displayData = (value) => {
+    getbookingbyid(value.id)
       .then((response) => {
         setbill(response.data);
         notification["success"]({
           message: "Đặt phòng khách sạn thành công",
           placement: "topRight",
         });
-        console.log(booking.id)
+        console.log(value.id)
         props.setEditModal(null);
       })
       .catch((error) => console.log(error));
@@ -74,7 +74,6 @@ const ModalAddingBooking = (props) => {
           labelCol={{ span: 9 }}
           wrapperCol={{ span: 16 }}
           onFinish={onFinishModal}
-          initialValues={props.editModal}
         >
           <Form.Item
             label="Số người"

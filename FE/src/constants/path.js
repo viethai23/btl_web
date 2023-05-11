@@ -6,5 +6,6 @@ export const PATH = {
   ROOM_HOTEL: "/hotel/:id",
   BILL: "/bill",
   BILL_USER: "/bill/:id",
-  BOOKING: "/booking"
+  BOOKING: "/booking",
+  SIGNUP: "/signup"
 };
