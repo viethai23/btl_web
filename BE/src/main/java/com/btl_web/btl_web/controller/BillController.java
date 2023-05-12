@@ -65,11 +65,11 @@ public class BillController {
         return ResponseEntity.ok(result);
     }
     // Thống kê billvafaf tổng doanh thu theo user và day
-    @GetMapping("/bills/total-amount/{userId}/{dayStart}/{dayEnd}")
+    @GetMapping("/total_amount")
     public ResponseEntity<?> getTotalAmountByUserIdAndDate(
-            @PathVariable Long userId,
-            @PathVariable String dayStart,
-            @PathVariable String dayEnd) {
+            @RequestParam Long userId,
+            @RequestParam String dayStart,
+            @RequestParam String dayEnd) {
         Map<String, Object> result = billService.getTotalAmountByUserIdAndDate(userId, dayStart, dayEnd);
         return ResponseEntity.ok(result);
     }

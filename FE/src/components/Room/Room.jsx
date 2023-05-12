@@ -57,8 +57,8 @@ const Room = (props) => {
   useEffect(() => {
     setId(idHotel.id);
     setUserId(user.id);
-    console.log("setting id to",idHotel.id)
-  },[id]);
+    console.log("setting id to", idHotel.id)
+  }, [id]);
   useEffect(() => {
     if (!user.identifier) {
       getroom()
@@ -66,7 +66,7 @@ const Room = (props) => {
           setrooms(response.data);
         })
         .catch((error) => console.log(error));
-      console.log("not yet, "+id);
+      console.log("not yet, " + id);
     } else {
       getroombyhotel(id)
         .then((response) => {
@@ -75,9 +75,9 @@ const Room = (props) => {
           }, 222);
         })
         .catch((error) => console.log(error));
-      console.log("by hotel works with "+id)
+      console.log("by hotel works with " + id)
     }
-  },[id]); //thêm [room] sẽ tạo vòng lặp vô hạn nhưng chính xác, chỉ dùng trong tg ngắn
+  }, [rooms, id]); //thêm [room] sẽ tạo vòng lặp vô hạn nhưng chính xác, chỉ dùng trong tg ngắn
 
   const onConfirmDelete = () => {
     deleteroom(wantDelete)
@@ -375,7 +375,7 @@ const Room = (props) => {
 
   if (user && user.identifier !== null) {
     return roomClient();
-  }else{
+  } else {
     return roomAdmin();
   }
 };

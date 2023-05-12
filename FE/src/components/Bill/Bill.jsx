@@ -1,19 +1,16 @@
-import { DownOutlined, SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 import {
   Button,
-  Dropdown,
   Input,
-  Menu,
-  notification,
-  Popconfirm,
   Space,
+  Typography,
   Table,
 } from "antd";
 import { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import styled from "styled-components";
-import { deletebill, getbill, getbillbyuser } from "../../apis/billApi";
-import { useParams } from "react-router-dom";
+import { getbill, getbillbyuser } from "../../apis/billApi";
+import ModalBill from "./ModalBill";
 
 const Container = styled.div`
   margin: 20px;
@@ -31,24 +28,26 @@ const BillTable = styled.div`
   margin: 10px;
 `;
 
-const Action = styled.div`
-  width: 7vw;
-`;
 
 const Bill = (props) => {
   const { user } = props;
   const [bills, setbills] = useState([]);
-  const [editModal, setEditModal] = useState(null);
-  const [wantDelete, setWantDelete] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [total, settotal] = useState(0)
   const searchInput = useRef(null);
+
+  function calculateTotalAmount(bookings) {
+    const total = bookings.reduce((acc, booking) => acc + booking.amount_total, 0);
+    return total;
+  }
 
   useEffect(() => {
     if (!user.identifier) {
       getbill()
         .then((response) => {
           setbills(response.data);
+          settotal(calculateTotalAmount(response.data));
         })
         .catch((error) => console.log(error));
     } else {
@@ -71,32 +70,6 @@ const Bill = (props) => {
     setSearchText("");
   };
 
-  const onConfirmDelete = () => {
-    deletebill(wantDelete)
-      .then(() => {
-        displaydata();
-      })
-      .catch(() => {
-        notification["error"]({
-          message: "Xóa hoa don thất bại",
-          placement: "topRight",
-        });
-      });
-  };
-
-  const displaydata = () => {
-    getbill()
-      .then((response) => {
-        setbills(response.data);
-        notification["success"]({
-          message: "Xóa hoa don thành công",
-          placement: "topRight",
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
@@ -207,7 +180,7 @@ const Bill = (props) => {
       key: "payment_method",
     },
     {
-      title: "Số lượng",
+      title: "Tổng tiền",
       dataIndex: "amount_total",
       key: "amount_total",
       sorter: (a, b) => a.amount_total - b.amount_total,
@@ -215,20 +188,18 @@ const Bill = (props) => {
     },
     {
       title: "Phòng",
-      dataIndex: ["booking","room","room_name"],
+      dataIndex: ["booking", "room", "room_name"],
       key: "room_name",
-      ...getColumnSearchProps("id"),
     },
     {
       title: "Khách sạn",
-      dataIndex: ["booking","room","hotel","name"],
+      dataIndex: ["booking", "room", "hotel", "name"],
       key: "name",
-      ...getColumnSearchProps("id"),
     },
     {
       title: "Tên người dùng",
-      dataIndex: ["booking","user", "full_name"],
-      key: "full_name"
+      dataIndex: ["booking", "user", "full_name"],
+      key: "full_name",
     }
   ];
 
@@ -248,6 +219,12 @@ const Bill = (props) => {
           <div>
             <h2>DANH SÁCH HÓA ĐƠN</h2>
           </div>
+          {!user.identifier && <ModalBill
+            setbills={setbills}
+            bills={bills}
+            settotal={settotal}
+          />}
+
           <BillTable>
             <Table //dataIndex se duoc su dung nhu la ten cua 1 thuoc tinh cua doi tuong nam trong 1 ban ghi tren bang
               dataSource={bills}
@@ -259,6 +236,7 @@ const Bill = (props) => {
                 pageSizeOptions: ["10", "20", "30"],
               }}
             ></Table>
+            <Typography.Text>Tổng tiền hóa đơn: {total}</Typography.Text>
           </BillTable>
         </Content>
       </Container>
