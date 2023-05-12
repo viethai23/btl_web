@@ -12,6 +12,7 @@ import com.btl_web.btl_web.repository.BookingRepository;
 import com.btl_web.btl_web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -161,5 +162,24 @@ public class BillServiceImpl implements BillService {
         result.put("totalAmount", totalAmount);
         return result;
     }
+
+    @Override
+    public Map<String, Object> getTotalAmountByUserIdAndDate(Long userId, String dayStart, String dayEnd) {
+        List<Booking> bookings = bookingRepository.findByUserId(userId);
+        double totalAmount = 0.0;
+        List<BillResponseDto> billResponseDtos = new ArrayList<>();
+        for (Booking booking : bookings) {
+            List<Bill> bills = billRepository.findByBookingIdAndPaymentDateBetween(booking.getId(), dayStart, dayEnd);
+            for (Bill bill : bills) {
+                billResponseDtos.add(billMapper.toDto(bill));
+                totalAmount += bill.getAmountTotal();
+            }
+        }
+        Map<String, Object> result = new HashMap<>();
+        result.put("bills", billResponseDtos);
+        result.put("totalAmount", totalAmount);
+        return result;
+    }
+
 
 }

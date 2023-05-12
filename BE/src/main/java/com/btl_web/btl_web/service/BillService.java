@@ -17,4 +17,5 @@ public interface BillService {
     boolean isBookingIdExist(Long bookingId);
     public Map<String, Object> getBillsByDateRange(String startDay, String endDay);
     public Map<String, Object> getBillsByUserIdWithTotalAmount(Long userId);
+    public Map<String, Object> getTotalAmountByUserIdAndDate(Long userId, String dayStart, String dayEnd);
 }
