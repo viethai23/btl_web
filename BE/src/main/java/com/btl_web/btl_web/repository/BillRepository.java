@@ -11,4 +11,6 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     List<Bill> findByBookingId(Long bookingId);
 
     boolean existsByBookingId(Long bookingId);
+
+    List<Bill> findByPaymentDateBetween(String startDay, String endDay);
 }

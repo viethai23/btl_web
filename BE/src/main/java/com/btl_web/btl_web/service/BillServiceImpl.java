@@ -16,12 +16,10 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -128,6 +126,40 @@ public class BillServiceImpl implements BillService {
     @Override
     public boolean isBookingIdExist(Long bookingId) {
         return billRepository.existsByBookingId(bookingId);
+    }
+
+    @Override
+    public Map<String, Object> getBillsByDateRange(String startDay, String endDay) {
+        List<Bill> bills = billRepository.findByPaymentDateBetween(startDay, endDay);
+        double totalAmount = 0;
+        List<BillResponseDto> billResponseDtos = new ArrayList<>();
+        for (Bill bill : bills) {
+            BillResponseDto billResponseDto = billMapper.toDto(bill);
+            billResponseDtos.add(billResponseDto);
+            totalAmount += bill.getAmountTotal();
+        }
+        Map<String, Object> result = new HashMap<>();
+        result.put("bills", billResponseDtos);
+        result.put("totalAmount", totalAmount);
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> getBillsByUserIdWithTotalAmount(Long userId) {
+        List<Booking> bookings = bookingRepository.findByUserId(userId);
+        List<BillResponseDto> billResponseDtos = new ArrayList<>();
+        double totalAmount = 0;
+        for (Booking booking : bookings) {
+            List<Bill> bills = billRepository.findByBookingId(booking.getId());
+            for (Bill bill : bills) {
+                billResponseDtos.add(billMapper.toDto(bill));
+                totalAmount += bill.getAmountTotal();
+            }
+        }
+        Map<String, Object> result = new HashMap<>();
+        result.put("bills", billResponseDtos);
+        result.put("totalAmount", totalAmount);
+        return result;
     }
 
 }

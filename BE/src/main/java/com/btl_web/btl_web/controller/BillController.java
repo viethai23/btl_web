@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/bills")
@@ -49,6 +50,19 @@ public class BillController {
     public ResponseEntity<List<BillResponseDto>> getBillsByUserId(@PathVariable Long userId) {
         List<BillResponseDto> billResponseDtos = billService.getBillsByUserId(userId);
         return new ResponseEntity<>(billResponseDtos, HttpStatus.OK);
+    }
+    // Thống kê bill và tổng doanh thu theo ngày bắt đầu và ngày kết thúc
+    @GetMapping("/date-range")
+    public ResponseEntity<?> getBillsByDateRange(@RequestParam("startDay") String startDay,
+                                                 @RequestParam("endDay") String endDay) {
+        Map<String, Object> result = billService.getBillsByDateRange(startDay, endDay);
+        return ResponseEntity.ok(result);
+    }
+    // Thống kê billvafaf tổng doanh thu theo user
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getBillsByUserIdWithTotalAmount(@PathVariable Long userId) {
+        Map<String, Object> result = billService.getBillsByUserIdWithTotalAmount(userId);
+        return ResponseEntity.ok(result);
     }
 
 }
