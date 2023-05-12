@@ -13,4 +13,5 @@ public interface BillService {
     public void deleteBill(Long id);
 //    public Double calculateTotalPaymentByUser(Long UserId);
     public List<BillResponseDto> getBillsByUserId(Long userId);
+    boolean isBookingIdExist(Long bookingId);
 }

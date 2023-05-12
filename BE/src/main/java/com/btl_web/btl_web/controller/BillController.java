@@ -2,6 +2,7 @@ package com.btl_web.btl_web.controller;
 
 import com.btl_web.btl_web.model.dto.BillRequestDto;
 import com.btl_web.btl_web.model.dto.BillResponseDto;
+import com.btl_web.btl_web.model.dto.BookingResponseDto;
 import com.btl_web.btl_web.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,8 +28,11 @@ public class BillController {
     }
 
     @PostMapping
-    public BillResponseDto createBill(@RequestBody BillRequestDto requestDto) {
-        return billService.createBill(requestDto);
+    public ResponseEntity<?> createBill(@RequestBody BillRequestDto requestDto) {
+        if(billService.isBookingIdExist(requestDto.getBookingId()))
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        BillResponseDto responseDto = billService.createBill(requestDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

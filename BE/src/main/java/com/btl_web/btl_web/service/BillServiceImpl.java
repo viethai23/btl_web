@@ -125,4 +125,9 @@ public class BillServiceImpl implements BillService {
         return billResponseDtos;
     }
 
+    @Override
+    public boolean isBookingIdExist(Long bookingId) {
+        return billRepository.existsByBookingId(bookingId);
+    }
+
 }
